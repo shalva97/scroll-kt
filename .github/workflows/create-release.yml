@@ -30,6 +30,6 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            ./shared/build/bin/*/releaseExecutable/google-auth-decode-*exe
+            ./build/bin/macosX64/releaseExecutable/scroll-kt.kexe
           tag_name: ${{steps.tag.outputs.tag}}
           name: version v${{steps.tag.outputs.tag}}
