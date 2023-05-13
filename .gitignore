@@ -1,0 +1,13 @@
+# Gradle files
+.gradle/
+build/
+
+# Log/OS Files
+*.log
+
+# IntelliJ
+*.iml
+.idea/
+misc.xml
+deploymentTargetDropDown.xml
+render.experimental.xml
