@@ -16,3 +16,5 @@ kotlin {
         val macosX64Main by getting
     }
 }
+
+version = "0.0.1"
