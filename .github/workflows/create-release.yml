@@ -2,6 +2,9 @@ name: 'Build and release'
 
 on: workflow_dispatch
 
+permissions:
+  contents: write
+
 jobs:
   build:
     name: 'Build artifacts and publish'
@@ -27,7 +30,7 @@ jobs:
         id: tag
         run: ./gradlew properties -q | grep "version:" | awk '{ print "::set-output name=tag::"$2 }'
       - name: 'Create GitHub Release'
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v0.1.15
         with:
           files: |
             ./build/bin/macosX64/releaseExecutable/scroll-kt.kexe
