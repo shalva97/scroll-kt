@@ -1,4 +1,5 @@
-import kotlinx.cinterop.*
+import kotlinx.cinterop.COpaquePointer
+import kotlinx.cinterop.staticCFunction
 import platform.CoreFoundation.*
 import platform.CoreGraphics.*
 import kotlin.math.sign
@@ -7,17 +8,23 @@ fun cgEventCallback(
     proxy: CGEventTapProxy?, type: CGEventType, event: CGEventRef?, refcon: COpaquePointer?
 ): CGEventRef? {
     if (CGEventGetIntegerValueField(event, kCGScrollWheelEventIsContinuous) != 1.toLong()) {
-        val delta = CGEventGetIntegerValueField(event, kCGScrollWheelEventPointDeltaAxis1)
+        val deltaY = CGEventGetIntegerValueField(event, kCGScrollWheelEventPointDeltaAxis1)
+        val deltaX = CGEventGetIntegerValueField(event, kCGScrollWheelEventPointDeltaAxis2)
 
-        CGEventSetIntegerValueField(event, kCGScrollWheelEventDeltaAxis1, delta.sign * LINES)
+        CGEventSetIntegerValueField(event, kCGScrollWheelEventDeltaAxis1, deltaY.sign * LINES_X)
+        CGEventSetIntegerValueField(event, kCGScrollWheelEventDeltaAxis2, deltaX.sign * LINES_Y)
     }
     return event
 }
 
 fun main() {
-    val eventOfInterest = (1uL shl kCGEventScrollWheel.toInt())
     val eventTap = CGEventTapCreate(
-        kCGSessionEventTap, kCGHeadInsertEventTap, 0, eventOfInterest, staticCFunction(::cgEventCallback), null
+        tap = kCGSessionEventTap,
+        place = kCGHeadInsertEventTap,
+        options = 0,
+        eventsOfInterest = (1uL shl kCGEventScrollWheel.toInt()),
+        callback = staticCFunction(::cgEventCallback),
+        userInfo = null
     )
     val runLoopSource = CFMachPortCreateRunLoopSource(kCFAllocatorDefault, eventTap, 0)
 
@@ -29,4 +36,5 @@ fun main() {
     CFRelease(runLoopSource)
 }
 
-private const val LINES = 3L
+private const val LINES_Y = 5L
+private const val LINES_X = 3L
