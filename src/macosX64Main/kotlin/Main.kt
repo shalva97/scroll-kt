@@ -11,8 +11,8 @@ fun cgEventCallback(
         val deltaY = CGEventGetIntegerValueField(event, kCGScrollWheelEventPointDeltaAxis1)
         val deltaX = CGEventGetIntegerValueField(event, kCGScrollWheelEventPointDeltaAxis2)
 
-        CGEventSetIntegerValueField(event, kCGScrollWheelEventDeltaAxis1, deltaY.sign * LINES_Y)
-        CGEventSetIntegerValueField(event, kCGScrollWheelEventDeltaAxis2, deltaX.sign * LINES_X)
+        CGEventSetIntegerValueField(event, kCGScrollWheelEventDeltaAxis1, deltaY.sign * MULTIPLIER_Y)
+        CGEventSetIntegerValueField(event, kCGScrollWheelEventDeltaAxis2, deltaX.sign * MULTIPLIER_X)
     }
     return event
 }
@@ -36,5 +36,5 @@ fun main() {
     CFRelease(runLoopSource)
 }
 
-private const val LINES_Y = 3L
-private const val LINES_X = 5L
+private const val MULTIPLIER_Y = 7L
+private const val MULTIPLIER_X = 4L
