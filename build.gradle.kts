@@ -13,6 +13,11 @@ kotlin {
         }
     }
     sourceSets {
+        val commonMain by getting {
+            dependencies {
+                implementation("org.jetbrains.kotlinx:kotlinx-cli:0.3.5")
+            }
+        }
         val macosX64Main by getting
     }
 }
