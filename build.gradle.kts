@@ -1,5 +1,5 @@
 plugins {
-    kotlin("multiplatform") version "1.8.20"
+    kotlin("multiplatform") version "1.9.23"
 }
 
 repositories {
@@ -17,4 +17,4 @@ kotlin {
     }
 }
 
-version = "0.0.2"
+version = "1.0.0"
