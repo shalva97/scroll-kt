@@ -30,7 +30,7 @@ jobs:
         id: tag
         run: ./gradlew properties -q | grep "version:" | awk '{ print "::set-output name=tag::"$2 }'
       - name: 'Create GitHub Release'
-        uses: softprops/action-gh-release@v2.0.9
+        uses: softprops/action-gh-release@v2.2.0
         with:
           files: |
             ./build/bin/macosX64/releaseExecutable/scroll-kt.kexe
