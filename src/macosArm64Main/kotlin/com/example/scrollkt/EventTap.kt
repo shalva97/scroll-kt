@@ -1,12 +1,14 @@
-@file:OptIn(ExperimentalForeignApi::class)
+package com.example.scrollkt
 
-import kotlinx.cinterop.COpaquePointer
-import kotlinx.cinterop.ExperimentalForeignApi
-import kotlinx.cinterop.staticCFunction
+import kotlinx.cinterop.*
 import platform.CoreFoundation.*
 import platform.CoreGraphics.*
 import kotlin.math.sign
 
+private const val MULTIPLIER_Y = 4L
+private const val MULTIPLIER_X = 4L
+
+@OptIn(ExperimentalForeignApi::class)
 fun cgEventCallback(
     proxy: CGEventTapProxy?, type: CGEventType, event: CGEventRef?, refcon: COpaquePointer?
 ): CGEventRef? {
@@ -20,7 +22,8 @@ fun cgEventCallback(
     return event
 }
 
-fun main() {
+@OptIn(ExperimentalForeignApi::class)
+fun setupEventTap(): Boolean {
     val eventTap = CGEventTapCreate(
         tap = kCGSessionEventTap,
         place = kCGHeadInsertEventTap,
@@ -29,15 +32,12 @@ fun main() {
         callback = staticCFunction(::cgEventCallback),
         userInfo = null
     )
+    if (eventTap == null) {
+        println("Failed to create event tap - check Accessibility permissions")
+        return false
+    }
     val runLoopSource = CFMachPortCreateRunLoopSource(kCFAllocatorDefault, eventTap, 0)
-
     CFRunLoopAddSource(CFRunLoopGetCurrent(), runLoopSource, kCFRunLoopCommonModes)
     CGEventTapEnable(eventTap, true)
-    CFRunLoopRun()
-
-    CFRelease(eventTap)
-    CFRelease(runLoopSource)
+    return true
 }
-
-private const val MULTIPLIER_Y = 4L
-private const val MULTIPLIER_X = 4L

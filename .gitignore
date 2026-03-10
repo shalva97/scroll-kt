@@ -11,3 +11,4 @@ build/
 misc.xml
 deploymentTargetDropDown.xml
 render.experimental.xml
+.DS_Store
