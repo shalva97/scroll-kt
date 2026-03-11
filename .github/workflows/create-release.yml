@@ -22,17 +22,24 @@ jobs:
           java-version: 11
           distribution: temurin
           cache: 'gradle'
-      - name: 'Build native executables'
+      - name: 'Build app and installer'
         uses: gradle/gradle-build-action@v3.5.0
         with:
-          arguments: linkReleaseExecutableMacosX64
+          arguments: packageInstaller
+      - name: 'Compress .app bundle'
+        run: |
+          cd build/dist
+          zip -r ScrollKT.app.zip ScrollKT.app
       - name: 'export version number'
         id: tag
-        run: ./gradlew properties -q | grep "version:" | awk '{ print "::set-output name=tag::"$2 }'
+        run: |
+          VERSION=$(./gradlew properties -q | grep "version:" | awk '{print $2}')
+          echo "tag=$VERSION" >> $GITHUB_OUTPUT
       - name: 'Create GitHub Release'
         uses: softprops/action-gh-release@v2.5.0
         with:
           files: |
-            ./build/bin/macosX64/releaseExecutable/scroll-kt.kexe
+            ./build/dist/ScrollKT.app.zip
+            ./build/dist/ScrollKT.pkg
           tag_name: ${{steps.tag.outputs.tag}}
           name: version v${{steps.tag.outputs.tag}}
