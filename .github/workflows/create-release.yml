@@ -36,7 +36,7 @@ jobs:
           VERSION=$(./gradlew properties -q | grep "version:" | awk '{print $2}')
           echo "tag=$VERSION" >> $GITHUB_OUTPUT
       - name: 'Create GitHub Release'
-        uses: softprops/action-gh-release@v2.6.2
+        uses: softprops/action-gh-release@v3.0.0
         with:
           files: |
             ./build/dist/ScrollKT.app.zip
