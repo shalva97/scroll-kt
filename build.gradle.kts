@@ -1,5 +1,5 @@
 plugins {
-    kotlin("multiplatform") version "2.3.10"
+    kotlin("multiplatform") version "2.3.21"
 }
 
 repositories {
