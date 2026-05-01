@@ -60,4 +60,3 @@ In `EventTap.kt`, you can modify `MULTIPLIER_Y` and `MULTIPLIER_X` constants to 
 private const val MULTIPLIER_Y = 4L
 private const val MULTIPLIER_X = 4L
 ```
-After making changes, rebuild the app using `./gradlew packageApp`.
